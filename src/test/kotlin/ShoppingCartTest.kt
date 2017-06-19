@@ -8,7 +8,7 @@ class ShoppingCartTest {
 
         val books = arrayListOf(Book(name = "哈利波特第一集", quantity = 1, salePrice = 100.0))
 
-        val target = ShoppingCartTest(books)
+        val target = ShoppingCart(books)
 
         val expected = 100.0
 
