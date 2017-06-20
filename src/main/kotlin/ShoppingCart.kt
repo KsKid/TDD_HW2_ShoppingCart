@@ -16,6 +16,7 @@ class ShoppingCart(var books: List<Book>){
         when (books.toSet().size){
             1 -> return 1.0
             2 -> return 0.95
+            3 -> return 0.9
             else -> return 1.0
         }
     }
