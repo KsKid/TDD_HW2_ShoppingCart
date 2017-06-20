@@ -1,6 +1,6 @@
 import java.math.BigDecimal
 
-class ShoppingCart(var books: List<Book>){
+class ShoppingCart(var books: List<Book>) {
 
     /**
      * 取得折扣率
@@ -12,8 +12,8 @@ class ShoppingCart(var books: List<Book>){
      * 6. 需要留意的是，如果你買了四本書，其中三本不同，第四本則是重複的，那麼那三本將享有10%的折扣，但重複的那一本，則仍須100元。
      *
      */
-    fun getDiscountRate(): Double{
-        when (books.toSet().size){
+    fun <T> List<T>.getDiscountRate(): Double {
+        when (books.toSet().size) {
             1 -> return 1.0
             2 -> return 0.95
             3 -> return 0.9
@@ -23,7 +23,18 @@ class ShoppingCart(var books: List<Book>){
         }
     }
 
-    fun getSubtotal(): Double{
-        return books.sumByDouble { book -> BigDecimal(book.getSubtotal()).multiply(BigDecimal(getDiscountRate())).toDouble() }
+    fun getSubtotal(): Double {
+        var subtotal = 0.0
+        while (books.isNotEmpty()) {
+            val distinctBooks = books.distinctBy { book -> book.name }
+            subtotal += BigDecimal(distinctBooks.sumByDouble { book -> book.salePrice })
+                    .multiply(BigDecimal(distinctBooks.getDiscountRate()))
+                    .toDouble()
+            //List沒有removeAll，轉型成ArrayList會不會有其他問題
+            (books as ArrayList).removeAll(distinctBooks.filter { it.quantity == 1 })
+            distinctBooks.forEach { it.quantity -= 1 }
+        }
+        return subtotal
     }
+
 }
