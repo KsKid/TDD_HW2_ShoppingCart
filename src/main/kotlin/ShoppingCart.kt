@@ -17,6 +17,7 @@ class ShoppingCart(var books: List<Book>){
             1 -> return 1.0
             2 -> return 0.95
             3 -> return 0.9
+            4 -> return 0.8
             else -> return 1.0
         }
     }
